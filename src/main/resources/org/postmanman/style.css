@@ -1,0 +1,79 @@
+.root {
+    -fx-base: #1C1C1C;
+    -fx-control-inner-background: #2B2B2B;
+    -fx-font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.sidebar {
+    -fx-background-color: #212121;
+    -fx-border-color: #333333;
+    -fx-border-width: 0 1 0 0;
+    -fx-padding: 10;
+}
+
+.address-bar {
+    -fx-background-color: #2B2B2B;
+    -fx-padding: 5;
+    -fx-background-radius: 5;
+    -fx-border-color: #3B3B3B;
+    -fx-border-radius: 5;
+}
+
+.method-combo {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FF6C37;
+    -fx-font-weight: bold;
+}
+
+.url-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #666666;
+}
+
+.send-button {
+    -fx-background-color: #097BED;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 7 20;
+}
+
+.code-area {
+    -fx-prompt-text-fill: #808080
+}
+
+.response-area {
+    -fx-font-family: 'Consolas', 'Monospaced';
+    -fx-font-size: 13px;
+    -fx-text-fill: #A9B7C6;
+}
+
+.tab-pane {
+    -fx-tab-max-height: 30px;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #1e1e1e;
+}
+
+.tab {
+    -fx-background-color: #1e1e1e;
+    -fx-background-insets: 0;
+    -fx-focus-color: transparent;
+}
+
+.tab:selected {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #FF6C37;
+    -fx-border-width: 0 0 3 0;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #A6A6A6;
+    -fx-font-size: 12px;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #FFFFFF;
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TextArea?>
+
+<?import javafx.scene.control.SplitPane?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.postmanman.AppController"
+            stylesheets="@style.css">
+
+    <left>
+        <VBox spacing="10" prefWidth="220" styleClass="sidebar">
+            <Label text="HISTORY" />
+            <ListView fx:id="historyList" VBox.vgrow="ALWAYS" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="20" style="-fx-padding: 20;">
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="address-bar">
+                <ComboBox fx:id="methodCombo" styleClass="method-combo" prefWidth="90"/>
+                <TextField fx:id="urlField" HBox.hgrow="ALWAYS" styleClass="url-field" promptText="Enter URL"/>
+                <Button text="Send" onAction="#onSendRequest" styleClass="send-button"/>
+            </HBox>
+
+            <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.4">
+                <TabPane tabClosingPolicy="UNAVAILABLE">
+                    <Tab text="Body (Request)">
+                        <TextArea fx:id="requestBodyArea" styleClass="code-area" promptText='{ "key": "value" }'/>
+                    </Tab>
+
+                    <Tab text="Headers (Request)">
+                        <TextArea fx:id="requestHeadersArea" styleClass="code-area" promptText="Key: Value"/>
+                    </Tab>
+                </TabPane>
+
+                <TabPane tabClosingPolicy="UNAVAILABLE">
+                    <Tab text="Response Body">
+                        <TextArea fx:id="responseBodyArea" editable="false" styleClass="code-area" />
+                    </Tab>
+
+                    <Tab text="Response Headers">
+                        <TextArea fx:id="responseHeadersArea" editable="false" styleClass="code-area" />
+                    </Tab>
+                </TabPane>
+            </SplitPane>
+        </VBox>
+    </center>
+</BorderPane>
