@@ -12,6 +12,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.stream.Collectors;
 
 public class AppController {
 
@@ -30,8 +31,35 @@ public class AppController {
 
     @FXML
     public void initialize() {
-        methodCombo.getItems().addAll("GET", "POST", "PUT", "DELETE");
+
+        methodCombo.getItems().addAll("GET", "POST", "PUT", "DELETE", "PATCH");
         methodCombo.setValue("GET");
+
+        methodCombo.setCellFactory(listView -> new ListCell<String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                    getStyleClass().removeAll(
+                            "method-get","method-post",
+                            "method-put","method-delete",
+                            "method-patch"
+                    );
+                } else {
+                    setText(item);
+                    getStyleClass().removeAll(
+                            "method-get","method-post",
+                            "method-put","method-delete",
+                            "method-patch"
+                    );
+                    getStyleClass().add("method-" + item.toLowerCase());
+                }
+            }
+        });
+
+        methodCombo.setButtonCell(methodCombo.getCellFactory().call(null));
 
         historyList.setPlaceholder(new Label("No history yet"));
     }
@@ -39,46 +67,97 @@ public class AppController {
     @FXML
     protected void onSendRequest() {
         String url = urlField.getText();
+        String method = methodCombo.getValue();
 
         if (url == null || !url.startsWith("http")) {
             responseBodyArea.setText("Error: URL must start with http:// or https://");
             return;
         }
 
-        responseBodyArea.setText("Requesting data from: " + url + "...");
+        try {
+            HttpRequest.Builder builder = HttpRequest.newBuilder().uri(URI.create(url));
 
-        HttpRequest req = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
+            String rawHeaders = requestHeadersArea.getText();
+            if (rawHeaders != null && !rawHeaders.isBlank()) {
 
-        client.sendAsync(req, HttpResponse.BodyHandlers.ofString())
-                .thenAccept(rep -> {
-                    String body = rep.body();
-                    String formattedResult;
+                rawHeaders.lines().forEach(line -> {
+                    if (line.contains(":")) {
 
-                    try {
-                        JsonElement je = JsonParser.parseString(body);
-                        formattedResult = gson.toJson(je);
+                        String[] parts = line.split(":", 2);
+                        builder.header(parts[0].trim(), parts[1].trim());
                     }
-
-                    catch (Exception e) {
-                        formattedResult = body;
-                    }
-
-                    final String finalOutput = formattedResult;
-
-                    Platform.runLater(() -> {
-                        responseBodyArea.setText(finalOutput);
-                        historyList.getItems().add(0, "GET - " + url);
-                    });
-                })
-                .exceptionally(ex -> {
-                    Platform.runLater(() -> {
-                        responseBodyArea.setText("Network Error: " + ex.getMessage());
-                    });
-
-                    return null;
                 });
+            }
+
+            String bodyData = requestBodyArea.getText();
+            if (bodyData == null) {
+
+                bodyData = "";
+            }
+
+            switch (method) {
+                case "POST":
+                    builder.POST(HttpRequest.BodyPublishers.ofString(bodyData));
+                    break;
+
+                case "PUT":
+                    builder.PUT(HttpRequest.BodyPublishers.ofString(bodyData));
+                    break;
+
+                case "PATCH":
+                    builder.method("PATCH", HttpRequest.BodyPublishers.ofString(bodyData));
+                    break;
+
+                case "DELETE":
+                    builder.DELETE();
+                    break;
+
+                default:
+                    builder.GET();
+            }
+
+            responseBodyArea.setText("Requesting data from: " + url + "...");
+
+            client.sendAsync(builder.build(), HttpResponse.BodyHandlers.ofString())
+                    .thenAccept(rep -> {
+                        String rawResponseBody = rep.body();
+                        String formattedBody;
+
+                        try {
+                            JsonElement je = JsonParser.parseString(rawResponseBody);
+                            formattedBody = gson.toJson(je);
+                        }
+
+                        catch (Exception e) {
+                            formattedBody = rawResponseBody;
+                        }
+
+                        String statusLine = "Status: " + rep.statusCode() + "\n";
+                        String repHeaders = rep.headers().map().entrySet().stream()
+                                .map(entry -> entry.getKey() + ": " + String.join(", ", entry.getValue()))
+                                .collect(Collectors.joining("\n"));
+
+                        final String finalBody = formattedBody;
+                        final String finalHeaders = statusLine + "--------------------------\n" + repHeaders;
+
+                        Platform.runLater(() -> {
+                            responseBodyArea.setText(finalBody);
+                            responseHeadersArea.setText(finalHeaders);
+
+                            historyList.getItems().add(0, method + " - " + url);
+                        });
+                    })
+                    .exceptionally(ex -> {
+                        Platform.runLater(() -> {
+                            responseBodyArea.setText("Network Error: " + ex.getMessage());
+                        });
+
+                        return null;
+                    });
+        }
+
+        catch (Exception e ) {
+            responseBodyArea.setText("Construction Error: " + e.getMessage());
+        }
     }
 }

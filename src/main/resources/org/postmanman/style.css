@@ -21,9 +21,14 @@
 
 .method-combo {
     -fx-background-color: transparent;
-    -fx-text-fill: #FF6C37;
     -fx-font-weight: bold;
 }
+
+.method-get { -fx-text-fill: #72d18e; -fx-font-weight: bold; }
+.method-post { -fx-text-fill: #ecd76d; -fx-font-weight: bold; }
+.method-put { -fx-text-fill: #5f7dad; -fx-font-weight: bold; }
+.method-delete { -fx-text-fill: #a28fbf; -fx-font-weight: bold; }
+.method-patch { -fx-text-fill: #e59285; -fx-font-weight: bold; }
 
 .url-field {
     -fx-background-color: transparent;
