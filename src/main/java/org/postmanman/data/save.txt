@@ -1,0 +1,4 @@
+PUT - https://api.github.com
+DELETE - https://api.github.com
+POST - https://api.github.com
+GET - https://api.github.com

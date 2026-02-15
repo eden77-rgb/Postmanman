@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.postmanman.utils.Logger;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -61,7 +62,25 @@ public class AppController {
 
         methodCombo.setButtonCell(methodCombo.getCellFactory().call(null));
 
-        historyList.setPlaceholder(new Label("No history yet"));
+        historyList.setItems(Logger.load());
+
+        historyList.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && historyList.getSelectionModel().getSelectedItem() != null) {
+                String selectedItem =  historyList.getSelectionModel().getSelectedItem();
+
+                String[] parts = selectedItem.split(" - ", 2);
+                if (parts.length == 2) {
+                    String method = parts[0];
+                    String url = parts[1];
+
+                    methodCombo.setValue(method);
+                    urlField.setText(url);
+
+                    responseBodyArea.clear();
+                    responseHeadersArea.clear();
+                }
+            }
+        });
     }
 
     @FXML
@@ -145,6 +164,7 @@ public class AppController {
                             responseHeadersArea.setText(finalHeaders);
 
                             historyList.getItems().add(0, method + " - " + url);
+                            Logger.save(historyList.getItems());
                         });
                     })
                     .exceptionally(ex -> {
