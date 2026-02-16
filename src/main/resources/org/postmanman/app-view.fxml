@@ -20,7 +20,7 @@
     <left>
         <VBox spacing="10" prefWidth="220" styleClass="sidebar">
             <Label text="HISTORY" />
-            <ListView fx:id="historyList" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="historyList" styleClass="history-list" VBox.vgrow="ALWAYS" />
         </VBox>
     </left>
 
@@ -32,7 +32,7 @@
                 <Button text="Send" onAction="#onSendRequest" styleClass="send-button"/>
             </HBox>
 
-            <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.4">
+            <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.4" styleClass="split-pane">
                 <TabPane tabClosingPolicy="UNAVAILABLE">
                     <Tab text="Body (Request)">
                         <TextArea fx:id="requestBodyArea" styleClass="code-area" promptText='{ "key": "value" }'/>

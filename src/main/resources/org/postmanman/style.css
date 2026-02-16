@@ -1,21 +1,30 @@
 .root {
-    -fx-base: #1C1C1C;
-    -fx-control-inner-background: #2B2B2B;
+    -fx-base: #212121;
+    -fx-background-color: #212121;
+    -fx-control-inner-background: #212121;
     -fx-font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 .sidebar {
-    -fx-background-color: #212121;
-    -fx-border-color: #333333;
+    -fx-background-color: #262626;
+    -fx-border-color: #444444;
     -fx-border-width: 0 1 0 0;
     -fx-padding: 10;
 }
 
+.history-list {
+    -fx-background-color: transparent;
+}
+
+.list-cell {
+    -fx-background-color: #262626;
+}
+
 .address-bar {
-    -fx-background-color: #2B2B2B;
+    -fx-background-color: #212121;
     -fx-padding: 5;
     -fx-background-radius: 5;
-    -fx-border-color: #3B3B3B;
+    -fx-border-color: #444444;
     -fx-border-radius: 5;
 }
 
@@ -24,11 +33,11 @@
     -fx-font-weight: bold;
 }
 
-.method-get { -fx-text-fill: #72d18e; -fx-font-weight: bold; }
-.method-post { -fx-text-fill: #ecd76d; -fx-font-weight: bold; }
-.method-put { -fx-text-fill: #5f7dad; -fx-font-weight: bold; }
-.method-delete { -fx-text-fill: #a28fbf; -fx-font-weight: bold; }
-.method-patch { -fx-text-fill: #e59285; -fx-font-weight: bold; }
+.method-get { -fx-text-fill: #7fda8e; -fx-font-weight: bold; }
+.method-post { -fx-text-fill: #f2e062; -fx-font-weight: bold; }
+.method-put { -fx-text-fill: #7fa3ec; -fx-font-weight: bold; }
+.method-delete { -fx-text-fill: #bd7e72; -fx-font-weight: bold; }
+.method-patch { -fx-text-fill: #b09ad3; -fx-font-weight: bold; }
 
 .url-field {
     -fx-background-color: transparent;
@@ -37,15 +46,21 @@
 }
 
 .send-button {
-    -fx-background-color: #097BED;
+    -fx-background-color: #387cf2;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-padding: 7 20;
 }
 
+.split-pane {
+    -fx-background-color: transparent;
+}
+
 .code-area {
-    -fx-prompt-text-fill: #808080
+    -fx-prompt-text-fill: #a6a6a6;
+
+    -fx-border-color: #444444;
 }
 
 .response-area {
@@ -59,7 +74,7 @@
 }
 
 .tab-pane .tab-header-area .tab-header-background {
-    -fx-background-color: #1e1e1e;
+    -fx-background-color: #212121;
 }
 
 .tab {
